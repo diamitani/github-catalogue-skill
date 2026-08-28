@@ -37,8 +37,8 @@ def fetch_repos(owner, max_repos=1000, include_private=False):
     
     fields = [
         'name', 'description', 'url', 'createdAt', 'pushedAt',
-        'primaryLanguage', 'stargazersCount', 'forkCount',
-        'isPrivate', 'isArchived', 'topics'
+        'primaryLanguage', 'stargazerCount', 'forkCount',
+        'isPrivate', 'isArchived', 'repositoryTopics'
     ]
     
     result = run_git([
@@ -119,16 +119,24 @@ def calculate_staleness(last_push):
     except:
         return 999
 
+def get_topics(repo):
+    """Extract topics from repositoryTopics."""
+    rt = repo.get('repositoryTopics', {})
+    nodes = rt.get('nodes', []) if isinstance(rt, dict) else []
+    return [n.get('topic', {}).get('name', '') for n in nodes if n]
+
 def analyze_repos(repos):
     """Add derived analysis fields."""
     for repo in repos:
+        repo['topics'] = get_topics(repo)
         repo['category'] = categorize_repo(
             repo['name'],
             repo.get('description'),
-            repo.get('topics', [])
+            repo['topics']
         )
         repo['staleness_days'] = calculate_staleness(repo.get('pushedAt'))
-        repo['language'] = repo.get('primaryLanguage', {}).get('name', 'N/A')
+        lang = repo.get('primaryLanguage', {}) or {}
+        repo['language'] = lang.get('name', 'N/A')
     return repos
 
 def generate_markdown_report(repos, output_path, owner):
@@ -200,14 +208,14 @@ def generate_markdown_report(repos, output_path, owner):
             f"|------------|-------------|----------|-------|----------|",
         ])
         
-        for repo in sorted(items, key=lambda x: x.get('stargazersCount', 0), reverse=True):
+        for repo in sorted(items, key=lambda x: x.get('stargazerCount', 0), reverse=True):
             desc = repo.get('description', '') or '-'
             if len(desc) > 40:
                 desc = desc[:37] + '...'
             desc = desc.replace('|', '\\|').replace('\n', ' ')
             
             lang = repo['language']
-            stars = repo.get('stargazersCount', 0)
+            stars = repo.get('stargazerCount', 0)
             updated = repo.get('pushedAt', '-')[:10]
             url = repo['url']
             
@@ -260,7 +268,7 @@ def generate_csv(repos, output_path):
                 repo.get('description', ''),
                 repo['url'],
                 repo['language'],
-                repo.get('stargazersCount', 0),
+                repo.get('stargazerCount', 0),
                 repo.get('forkCount', 0),
                 ', '.join(repo.get('topics', [])),
                 repo.get('createdAt', '')[:10],
