@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Local test files
+test_output/
+*.local*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated reports (keep structure, ignore test runs)
+*_github_catalogue_*.md
+*_github_catalogue_*.csv
+*_github_catalogue_*.json
+!examples/*_github_catalogue_*

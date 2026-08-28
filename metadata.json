@@ -1,0 +1,43 @@
+{
+  "skill_name": "github-catalogue-skill",
+  "version": "1.0.0",
+  "description": "Automatically inventory, categorize, and document GitHub repositories with intelligent analysis",
+  "author": "Patrick Diamitani",
+  "license": "MIT",
+  "framework": "ROSTR/PAL",
+  "requirements": {
+    "tools": ["gh", "python3", "jq"],
+    "auth": "GitHub CLI authentication",
+    "python_packages": []
+  },
+  "execution": {
+    "entry_point": "github_catalogue.py",
+    "supports": {
+      "interactive": true,
+      "cli_args": true,
+      "claude_skill": true,
+      "hermes_skill": true
+    }
+  },
+  "output": {
+    "formats": ["markdown", "csv", "json"],
+    "cloud_sync": ["Google Drive", "iCloud"],
+    "destination": "~/Desktop (default)"
+  },
+  "categories": [
+    "AI Agent Skill",
+    "Application", 
+    "Backend/API",
+    "Library/Framework",
+    "Developer Tool",
+    "Website",
+    "Infrastructure",
+    "Template/Demo",
+    "Project/Other"
+  ],
+  "usage_examples": [
+    "python3 github_catalogue.py",
+    "python3 github_catalogue.py username ~/Desktop",
+    "@github-catalogue-skill - catalogue my repos"
+  ]
+}
