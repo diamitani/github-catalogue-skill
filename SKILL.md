@@ -1,9 +1,7 @@
 ---
 name: github-catalogue-skill
-description: Automatically inventory GitHub repositories, categorize them, and generate organized catalogue reports with analysis
-version: 1.0.0
-author: Patrick Diamitani
-framework: ROSTR/PAL
+description: >
+  Automatically inventory GitHub repositories, categorize them, and generate organized catalogue reports with analysis Use this skill when working with github catalogue skill tasks or workflows.
 ---
 
 # GitHub Catalogue Skill
